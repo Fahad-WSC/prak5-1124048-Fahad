@@ -106,7 +106,7 @@ public class VirtualKeyboard extends JWindow {
                 btn.addActionListener(e -> typeChar(' '));
                 break;
             case "BACKSPACE":
-                btn.setText("⌫");
+                btn.setText("Del");
                 btn.setFont(new Font("SansSerif", Font.BOLD, 20));
                 btn.setPreferredSize(new Dimension(KEY_W + 20, KEY_H));
                 btn.setBackground(new Color(0xCC, 0x33, 0x33));
@@ -128,7 +128,7 @@ public class VirtualKeyboard extends JWindow {
                 btn.addActionListener(e -> dispose());
                 break;
             case "SHIFT":
-                btn.setText(shiftOn ? "▲ ABC" : "▲ abc");
+                btn.setText(shiftOn ? "ABC" : "abc");
                 btn.setPreferredSize(new Dimension(KEY_W + 30, KEY_H));
                 btn.setBackground(shiftOn ? AppColors.MC_YELLOW : new Color(0x55, 0x55, 0x55));
                 btn.setForeground(shiftOn ? AppColors.MC_DARK : Color.WHITE);
