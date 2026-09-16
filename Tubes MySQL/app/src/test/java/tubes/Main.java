@@ -1,4 +1,4 @@
-package tubes;
+package pbo.fahad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,24 +45,12 @@ abstract class SmartDevice {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getNama() {
         return nama;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
     public double getDaya() {
         return daya;
-    }
-
-    public void setDaya(double daya) {
-        this.daya = daya;
     }
 
     public String getStatus() {
@@ -73,6 +61,7 @@ abstract class SmartDevice {
         this.status = status;
     }
 
+    // Abstract Method wajib sesuai soal
     public abstract String getDeviceDetails();
 }
 
@@ -87,31 +76,7 @@ class SmartTV extends SmartDevice implements Switchable, Connectable {
         this.channel = channel;
         this.volume = volume;
         this.connectionType = connectionType;
-        turnOn(); // Mengatur status awal
-    }
-
-    public int getChannel() {
-        return channel;
-    }
-
-    public void setChannel(int channel) {
-        this.channel = channel;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
-    }
-
-    public void setConnectionType(ConnectionType connectionType) {
-        this.connectionType = connectionType;
+        turnOn(); // Atur status awal menyala
     }
 
     @Override
@@ -149,23 +114,7 @@ class SmartSpeaker extends SmartDevice implements Switchable, Connectable {
         super(id, nama, daya);
         this.volume = volume;
         this.connectionType = connectionType;
-        turnOn(); // Mengatur status awal
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
-    }
-
-    public void setConnectionType(ConnectionType connectionType) {
-        this.connectionType = connectionType;
+        turnOn(); // Atur status awal menyala
     }
 
     @Override
@@ -201,15 +150,7 @@ class SmartDoorLock extends SmartDevice implements Lockable {
     public SmartDoorLock(String id, String nama, double daya, String pin) {
         super(id, nama, daya);
         this.pin = pin;
-        lock(); // Mengatur status awal
-    }
-
-    public String getPin() {
-        return pin;
-    }
-
-    public void setPin(String pin) {
-        this.pin = pin;
+        lock(); // Atur status awal terkunci
     }
 
     @Override
@@ -230,32 +171,34 @@ class SmartDoorLock extends SmartDevice implements Lockable {
 }
 
 // --- Static Utility Class ---
-class InputUtil {
+class InputUtils {
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static String readString(String prompt) {
+    private InputUtils() {}
+
+    public static String getString(String prompt) {
         System.out.print(prompt);
-        return scanner.nextLine();
+        return scanner.nextLine().trim();
     }
 
-    public static int readInt(String prompt) {
+    public static int getInt(String prompt) {
         while (true) {
             try {
                 System.out.print(prompt);
-                return Integer.parseInt(scanner.nextLine());
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("Input harus berupa angka!");
             }
         }
     }
 
-    public static double readDouble(String prompt) {
+    public static double getDouble(String prompt) {
         while (true) {
             try {
                 System.out.print(prompt);
-                return Double.parseDouble(scanner.nextLine());
+                return Double.parseDouble(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Input harus berupa angka!");
+                System.out.println("Input harus berupa angka desimal/bulat!");
             }
         }
     }
@@ -263,27 +206,27 @@ class InputUtil {
 
 // --- Main Class ---
 public class Main {
-    public static void main(String[] args) {
-        List<SmartDevice> deviceList = new ArrayList<>();
-        boolean running = true;
+    private static final List<SmartDevice> daftarDevice = new ArrayList<>();
 
+    public static void main(String[] args) {
+        boolean running = true;
         while (running) {
-            System.out.println("\n=== SMART HOME SYSTEM ===");
+            System.out.println("\n=== MENU UTAMA ===");
             System.out.println("1. Tambah Perangkat");
             System.out.println("2. Print Semua Perangkat");
             System.out.println("3. Keluar");
-            int choice = InputUtil.readInt("Pilihan: ");
+            int pilihan = InputUtils.getInt("Pilih opsi (1-3): ");
 
-            switch (choice) {
+            switch (pilihan) {
                 case 1:
-                    tambahPerangkatMenu(deviceList);
+                    tambah();
                     break;
                 case 2:
-                    printSemuaPerangkat(deviceList);
+                    printSemua();
                     break;
                 case 3:
                     running = false;
-                    System.out.println("Keluar dari sistem.");
+                    System.out.println("Keluar dari program.");
                     break;
                 default:
                     System.out.println("Pilihan tidak valid!");
@@ -291,52 +234,49 @@ public class Main {
         }
     }
 
-    private static void tambahPerangkatMenu(List<SmartDevice> deviceList) {
+    private static void tambah() {
         System.out.println("\n--- Tambah Perangkat ---");
         System.out.println("1. Smart TV");
         System.out.println("2. Smart Speaker");
         System.out.println("3. Smart Door Lock");
-        int subChoice = InputUtil.readInt("Pilihan: ");
 
-        switch (subChoice) {
+        int pilih = InputUtils.getInt("Pilih (1-3): ");
+
+        switch (pilih) {
             case 1:
-                String tvId = InputUtil.readString("Masukkan ID: ");
-                String tvNama = InputUtil.readString("Masukkan Nama: ");
-                double tvDaya = InputUtil.readDouble("Masukkan Daya (W): ");
-                int channel = InputUtil.readInt("Masukkan Channel: ");
-                int tvVolume = InputUtil.readInt("Masukkan Volume: ");
-                System.out.println("Pilih Jenis Koneksi:");
-                System.out.println("1. WIFI");
-                System.out.println("2. BLUETOOTH");
-                int tvConnChoice = InputUtil.readInt("Pilihan Koneksi: ");
+                String tvId = InputUtils.getString("ID: ");
+                String tvNama = InputUtils.getString("Nama: ");
+                double tvDaya = InputUtils.getDouble("Daya (W): ");
+                int tvChannel = InputUtils.getInt("Channel: ");
+                int tvVolume = InputUtils.getInt("Volume: ");
+                System.out.println("Pilih Koneksi (1. WIFI / 2. BLUETOOTH): ");
+                int tvConnChoice = InputUtils.getInt("Pilihan: ");
                 ConnectionType tvConn = (tvConnChoice == 2) ? ConnectionType.BLUETOOTH : ConnectionType.WIFI;
 
-                deviceList.add(new SmartTV(tvId, tvNama, tvDaya, channel, tvVolume, tvConn));
+                daftarDevice.add(new SmartTV(tvId, tvNama, tvDaya, tvChannel, tvVolume, tvConn));
                 System.out.println("Smart TV berhasil ditambahkan!");
                 break;
 
             case 2:
-                String spId = InputUtil.readString("Masukkan ID: ");
-                String spNama = InputUtil.readString("Masukkan Nama: ");
-                double spDaya = InputUtil.readDouble("Masukkan Daya (W): ");
-                int spVolume = InputUtil.readInt("Masukkan Volume: ");
-                System.out.println("Pilih Jenis Koneksi:");
-                System.out.println("1. WIFI");
-                System.out.println("2. BLUETOOTH");
-                int spConnChoice = InputUtil.readInt("Pilihan Koneksi: ");
+                String spId = InputUtils.getString("ID: ");
+                String spNama = InputUtils.getString("Nama: ");
+                double spDaya = InputUtils.getDouble("Daya (W): ");
+                int spVolume = InputUtils.getInt("Volume: ");
+                System.out.println("Pilih Koneksi (1. WIFI / 2. BLUETOOTH): ");
+                int spConnChoice = InputUtils.getInt("Pilihan: ");
                 ConnectionType spConn = (spConnChoice == 2) ? ConnectionType.BLUETOOTH : ConnectionType.WIFI;
 
-                deviceList.add(new SmartSpeaker(spId, spNama, spDaya, spVolume, spConn));
+                daftarDevice.add(new SmartSpeaker(spId, spNama, spDaya, spVolume, spConn));
                 System.out.println("Smart Speaker berhasil ditambahkan!");
                 break;
 
             case 3:
-                String dlId = InputUtil.readString("Masukkan ID: ");
-                String dlNama = InputUtil.readString("Masukkan Nama: ");
-                double dlDaya = InputUtil.readDouble("Masukkan Daya (W): ");
-                String pin = InputUtil.readString("Masukkan PIN: ");
+                String dlId = InputUtils.getString("ID: ");
+                String dlNama = InputUtils.getString("Nama: ");
+                double dlDaya = InputUtils.getDouble("Daya (W): ");
+                String pin = InputUtils.getString("PIN: ");
 
-                deviceList.add(new SmartDoorLock(dlId, dlNama, dlDaya, pin));
+                daftarDevice.add(new SmartDoorLock(dlId, dlNama, dlDaya, pin));
                 System.out.println("Smart Door Lock berhasil ditambahkan!");
                 break;
 
@@ -345,15 +285,15 @@ public class Main {
         }
     }
 
-    private static void printSemuaPerangkat(List<SmartDevice> deviceList) {
+    private static void printSemua() {
         System.out.println("\n--- Daftar Semua Perangkat ---");
-        if (deviceList.isEmpty()) {
-            System.out.println("Belum ada perangkat yang terdaftar.");
+        if (daftarDevice.isEmpty()) {
+            System.out.println("Belum ada perangkat terdaftar.");
             return;
         }
 
         // Penerapan Polymorphism
-        for (SmartDevice device : deviceList) {
+        for (SmartDevice device : daftarDevice) {
             System.out.println(device.getDeviceDetails());
         }
     }
