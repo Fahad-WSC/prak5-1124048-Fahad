@@ -18,8 +18,9 @@ public class SmartDoorLock extends SmartDevice implements Lockable {
     public void unlock() { setStatus("Terbuka"); }
 
     @Override
-    public String getDeviceDetails() {
-        return String.format("Smart Door Lock [%s] (ID: %s) - Daya: %.1fW | Status: %s | PIN: ****",
-                getNama(), getId(), getDaya(), getStatus());
-    }
+   public String getDeviceDetails() {
+    return "Smart Door Lock [" + getNama() + "] (ID: " + getId()
+            + ") - Daya: " + getDaya() + "W | Status: " + getStatus()
+            + " | PIN: ****";
+}
 }

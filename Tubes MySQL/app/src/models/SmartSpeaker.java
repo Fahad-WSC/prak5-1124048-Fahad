@@ -28,7 +28,8 @@ public class SmartSpeaker extends SmartDevice implements Switchable, Connectable
 
     @Override
     public String getDeviceDetails() {
-        return String.format("• Smart Speaker [%s] (ID: %s) - Daya: %.1fW | Status: %s | Koneksi: %s | Volume: %d",
-                getNama(), getId(), getDaya(), getStatus(), connectionType, volume);
-    }
+    return "• Smart Speaker [" + getNama() + "] (ID: " + getId()
+            + ") - Daya: " + getDaya() + "W | Status: " + getStatus()
+            + " | Koneksi: " + connectionType + " | Volume: " + volume;
+}
 }

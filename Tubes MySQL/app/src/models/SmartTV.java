@@ -31,7 +31,9 @@ public class SmartTV extends SmartDevice implements Switchable, Connectable {
 
     @Override
     public String getDeviceDetails() {
-        return String.format("• Smart TV [%s] (ID: %s) - Daya: %.1fW | Status: %s | Koneksi: %s | Channel: %d | Volume: %d",
-                getNama(), getId(), getDaya(), getStatus(), connectionType, channel, volume);
-    }
+    return "• Smart TV [" + getNama() + "] (ID: " + getId()
+            + ") - Daya: " + getDaya() + "W | Status: " + getStatus()
+            + " | Koneksi: " + connectionType + " | Channel: " + channel
+            + " | Volume: " + volume;
+}
 }
